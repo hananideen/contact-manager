@@ -10,17 +10,21 @@ class EditContact extends StatefulWidget {
   final Contact contact;
   EditContact({Key key, @required this.contact}) : super(key: key);
 
-  _EditContactState createState() => _EditContactState();
+  _EditContactState createState() => _EditContactState(contact);
 }
 
 class _EditContactState extends State<EditContact> {
 
-  TextEditingController firstNameController = TextEditingController(text: "");
-  TextEditingController lastNameController = TextEditingController(text: "");
-  TextEditingController phoneNoController = TextEditingController(text: "");
-  TextEditingController emailController = TextEditingController(text: "");
-  TextEditingController dobController = TextEditingController(text: "");
-  TextEditingController genderController = TextEditingController(text: "");
+  final Contact contact;
+
+  _EditContactState(this.contact);
+
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController phoneNoController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController dobController = TextEditingController();
+  TextEditingController genderController = TextEditingController();
 
   @override
   void dispose() {
@@ -31,6 +35,17 @@ class _EditContactState extends State<EditContact> {
     dobController.dispose();
     genderController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    firstNameController.text = contact.firstName;
+    lastNameController.text = contact.lastName;
+    phoneNoController.text = contact.phoneNo;
+    emailController.text = contact.email;
+    dobController.text = contact.dateOfBirth;
+    genderController.text = contact.gender;
+    super.initState();
   }
 
   updateContact(Contact contact) async {
@@ -77,7 +92,7 @@ class _EditContactState extends State<EditContact> {
             Padding(
               padding: const EdgeInsets.only(left:16.0, right: 16.0),
               child: TextFormField(
-                controller: lastNameController = TextEditingController(text: widget.contact.lastName),
+                controller: lastNameController,
                 decoration: InputDecoration(
                   labelText: 'Last Name',
                 ),
@@ -86,7 +101,7 @@ class _EditContactState extends State<EditContact> {
             Padding(
               padding: const EdgeInsets.only(left:16.0, right: 16.0),
               child: TextFormField(
-                controller: phoneNoController = TextEditingController(text: widget.contact.phoneNo),
+                controller: phoneNoController,
                 decoration: InputDecoration(
                     labelText: 'Phone Number'
                 ),
@@ -95,7 +110,7 @@ class _EditContactState extends State<EditContact> {
             Padding(
               padding: const EdgeInsets.only(left:16.0, right: 16.0),
               child: TextFormField(
-                controller: emailController = TextEditingController(text: widget.contact.email),
+                controller: emailController,
                 decoration: InputDecoration(
                     labelText: 'Email'
                 ),
@@ -104,7 +119,7 @@ class _EditContactState extends State<EditContact> {
             Padding(
               padding: const EdgeInsets.only(left:16.0, right: 16.0),
               child: TextFormField(
-                controller: dobController = TextEditingController(text: widget.contact.dateOfBirth),
+                controller: dobController,
                 decoration: InputDecoration(
                     labelText: 'Date of Birth'
                 ),
@@ -113,7 +128,7 @@ class _EditContactState extends State<EditContact> {
             Padding(
               padding: const EdgeInsets.only(left:16.0, right: 16.0),
               child: TextFormField(
-                controller: genderController = TextEditingController(text: widget.contact.gender),
+                controller: genderController,
                 decoration: InputDecoration(
                     labelText: 'Gender'
                 ),
