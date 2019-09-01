@@ -43,4 +43,14 @@ class Contact {
         phoneNo: json['phone_no']
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    'id' : id,
+    'first_name' : firstName,
+    'last_name' : lastName,
+    'email' : email,
+    'gender' : gender,
+    'date_of_birth' : dateOfBirth,
+    'phone_no' : phoneNo
+  };
 }

@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
 import './contact.dart';
 import './contact_details.dart';
 
@@ -14,7 +12,7 @@ class ContactListView extends StatefulWidget {
 class _ContactListViewState extends State<ContactListView> {
   final String uri = 'https://mock-rest-api-server.herokuapp.com/api/v1/user';
 
-  Future<List<Contact>> _fetchUsers() async {
+  Future<List<Contact>> fetchContact() async {
     var response = await http.get(uri);
 
     if (response.statusCode == 200) {
@@ -32,7 +30,7 @@ class _ContactListViewState extends State<ContactListView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder<List<Contact>>(
-        future: _fetchUsers(),
+        future: fetchContact(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) return Center(child: CircularProgressIndicator());
 

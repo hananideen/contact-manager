@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
 import './contact.dart';
 
 class EditContact extends StatefulWidget {
@@ -29,9 +33,27 @@ class _EditContactState extends State<EditContact> {
     super.dispose();
   }
 
+  updateContact(Contact contact) async {
+    final String uri = 'https://mock-rest-api-server.herokuapp.com/api/v1/user/' +contact.id;
+    print(uri);
+
+    Map<String, String> headers = {"Content-type": "application/json"};
+    String json = jsonEncode(contact);
+    print(json);
+
+    var response = await http.put(uri, headers: headers, body: json);
+    if (response.statusCode == 200) {
+      String body = response.body;
+      print("success");
+    } else{
+      throw Exception('Failed');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         title: Text('Edit Contact'),
       ),
@@ -46,7 +68,7 @@ class _EditContactState extends State<EditContact> {
             Padding(
               padding: const EdgeInsets.only(left:16.0, right: 16.0),
               child: TextFormField(
-                controller: firstNameController = TextEditingController(text: widget.contact.firstName),
+                controller: firstNameController,
                 decoration: InputDecoration(
                   labelText: 'First Name',
                 ),
@@ -55,7 +77,7 @@ class _EditContactState extends State<EditContact> {
             Padding(
               padding: const EdgeInsets.only(left:16.0, right: 16.0),
               child: TextFormField(
-                controller: firstNameController = TextEditingController(text: widget.contact.lastName),
+                controller: lastNameController = TextEditingController(text: widget.contact.lastName),
                 decoration: InputDecoration(
                   labelText: 'Last Name',
                 ),
@@ -64,7 +86,7 @@ class _EditContactState extends State<EditContact> {
             Padding(
               padding: const EdgeInsets.only(left:16.0, right: 16.0),
               child: TextFormField(
-                controller: firstNameController = TextEditingController(text: widget.contact.phoneNo),
+                controller: phoneNoController = TextEditingController(text: widget.contact.phoneNo),
                 decoration: InputDecoration(
                     labelText: 'Phone Number'
                 ),
@@ -73,7 +95,7 @@ class _EditContactState extends State<EditContact> {
             Padding(
               padding: const EdgeInsets.only(left:16.0, right: 16.0),
               child: TextFormField(
-                controller: firstNameController = TextEditingController(text: widget.contact.email),
+                controller: emailController = TextEditingController(text: widget.contact.email),
                 decoration: InputDecoration(
                     labelText: 'Email'
                 ),
@@ -82,7 +104,7 @@ class _EditContactState extends State<EditContact> {
             Padding(
               padding: const EdgeInsets.only(left:16.0, right: 16.0),
               child: TextFormField(
-                controller: firstNameController = TextEditingController(text: widget.contact.dateOfBirth),
+                controller: dobController = TextEditingController(text: widget.contact.dateOfBirth),
                 decoration: InputDecoration(
                     labelText: 'Date of Birth'
                 ),
@@ -91,7 +113,7 @@ class _EditContactState extends State<EditContact> {
             Padding(
               padding: const EdgeInsets.only(left:16.0, right: 16.0),
               child: TextFormField(
-                controller: firstNameController = TextEditingController(text: widget.contact.gender),
+                controller: genderController = TextEditingController(text: widget.contact.gender),
                 decoration: InputDecoration(
                     labelText: 'Gender'
                 ),
@@ -99,14 +121,10 @@ class _EditContactState extends State<EditContact> {
             ),
             RaisedButton(
               onPressed: () {
-                return showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      content: Text(firstNameController.text),
-                    );
-                  },
-                );
+                Contact contact = new Contact(id: widget.contact.id, firstName: firstNameController.text,
+                    lastName: lastNameController.text, email: emailController.text, gender: genderController.text,
+                    dateOfBirth: dobController.text, phoneNo: phoneNoController.text);
+                updateContact(contact);
               },
               textColor: Colors.white,
               color: Colors.blue,
