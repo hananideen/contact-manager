@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
             title: Text('Contact Manager'),
           ),
           body: TabBarView(
+            physics: NeverScrollableScrollPhysics(),
             children: [
               AllContact(),
               FavoritesContact(),
