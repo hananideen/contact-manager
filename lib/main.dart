@@ -1,19 +1,33 @@
 import 'package:flutter/material.dart';
-import './contact_list_view.dart';
+import './all_contacts.dart';
+import './favorites_contact.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Contact Manager',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      home: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            bottom: TabBar(
+              tabs: [
+                Tab(text: "All"),
+                Tab(text: "Favorites")
+              ],
+            ),
+            title: Text('Contact Manager'),
+          ),
+          body: TabBarView(
+            children: [
+              AllContact(),
+              FavoritesContact(),
+            ],
+          ),
+        ),
       ),
-      home: ContactListView(),
     );
   }
 }
