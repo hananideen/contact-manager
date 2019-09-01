@@ -3,38 +3,49 @@ import 'package:flutter/material.dart';
 import './contact.dart';
 import './contact_details.dart';
 
-class FavoritesContact extends StatelessWidget {
+class FavoritesContact extends StatefulWidget {
 
   final List<Contact> contacts;
   FavoritesContact({Key key, @required this.contacts}) : super(key: key);
+  _FavoritesContactState createState() => _FavoritesContactState();
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Favorites'),
-      ),
-      body: ListView(
-        children: contacts
-          .map((user) => ListTile(
-          title: Text(user.firstName + " " + user.lastName),
-          subtitle: Text(user.phoneNo),
-          trailing: Icon(Icons.star),
-          leading: CircleAvatar(
-            backgroundColor: Colors.blue,
-            child: Icon(Icons.person),
+}
+
+class _FavoritesContactState extends State<FavoritesContact> {
+
+    @override
+    Widget build(BuildContext context) {
+      return Scaffold(
+          appBar: AppBar(
+            title: Text('Favorites'),
           ),
-          onTap: (){
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ContactDetails(contact: user),
-          ),
-        );
-      },
-    ))
-    .toList(),
-    )
-    );
+
+          body: ListView(
+            children: widget.contacts
+                .map((contact) => ListTile(
+              title: Text(contact.firstName + " " + contact.lastName),
+              subtitle: Text(contact.phoneNo),
+              trailing: IconButton(icon: Icon(Icons.star),
+                onPressed: (){
+                  setState(() {
+                    widget.contacts.remove(contact);
+                  });
+                },),
+              leading: CircleAvatar(
+                backgroundColor: Colors.blue,
+                child: Icon(Icons.person),
+              ),
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ContactDetails(contact: contact),
+                  ),
+                );
+              },
+            ))
+                .toList(),
+          )
+      );
   }
 }

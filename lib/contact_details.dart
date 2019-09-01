@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart' as launcher;
 import './info_card.dart';
 import './contact.dart';
 import './contact_edit.dart';
@@ -7,6 +8,28 @@ class ContactDetails extends StatelessWidget {
 
   final Contact contact;
   ContactDetails({Key key, @required this.contact}) : super(key: key);
+
+  void _showDialog(BuildContext context, {String title, String msg}) {
+    final dialog = AlertDialog(
+      title: Text(title),
+      content: Text(msg),
+      actions: <Widget>[
+        RaisedButton(
+          color: Colors.teal,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text(
+            'Close',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
+    );
+    showDialog(context: context, builder: (x) => dialog);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +40,8 @@ class ContactDetails extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.edit),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => EditContact(contact: contact),
-                ),
-              );
+              Route route = MaterialPageRoute(builder: (context) => EditContact(contact: contact));
+              Navigator.pushReplacement(context, route);
             },
           )
         ],
@@ -55,10 +74,37 @@ class ContactDetails extends StatelessWidget {
             InfoCard(
               text: contact.phoneNo,
               icon: Icons.phone,
+              onPressed: () async {
+                String removeSpaceFromPhoneNumber = contact.phoneNo.replaceAll(new RegExp(r"\s+\b|\b\s"), "");
+                final phoneCall = 'tel:$removeSpaceFromPhoneNumber';
+
+                if (await launcher.canLaunch(phoneCall)) {
+                  await launcher.launch(phoneCall);
+                } else {
+                  _showDialog(
+                    context,
+                    title: 'Oops',
+                    msg: 'Phone number can not be called.',
+                  );
+                }
+              },
             ),
             InfoCard(
               text: contact.email,
               icon: Icons.email,
+              onPressed: () async {
+                final emailAddress = 'mailto:${contact.email}';
+
+                if (await launcher.canLaunch(emailAddress)) {
+                  await launcher.launch(emailAddress);
+                } else {
+                  _showDialog(
+                    context,
+                    title: 'Oops',
+                    msg: 'Email cannot be send.',
+                  );
+                }
+              },
             ),
             InfoCard(
               text: contact.dateOfBirth,

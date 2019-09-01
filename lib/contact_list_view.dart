@@ -140,7 +140,7 @@ class _ContactListViewState extends State<ContactListView>{
                     }),
                     leading: CircleAvatar(
                       backgroundColor: Colors.blue,
-                      child: Icon(Icons.person),
+                      child: Text('${contact.firstName[0]}${contact.lastName[0]}'),
                     ),
                     onTap: (){
                       Navigator.push(
