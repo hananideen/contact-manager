@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import './contact.dart';
 import './contact_details.dart';
-
+import './contact_add.dart';
+import './favorites_contact.dart';
 
 class ContactListView extends StatefulWidget {
   _ContactListViewState createState() => _ContactListViewState();
 }
 
-class _ContactListViewState extends State<ContactListView> {
+class _ContactListViewState extends State<ContactListView>{
+  List<Contact> savedList = new List();
   final String uri = 'https://mock-rest-api-server.herokuapp.com/api/v1/user';
 
   Future<List<Contact>> fetchContact() async {
@@ -27,20 +29,48 @@ class _ContactListViewState extends State<ContactListView> {
   }
 
   deleteContact(id) async {
-    final String uri = 'https://mock-rest-api-server.herokuapp.com/api/v1/user/' +id;
+    final String uri = 'https://mock-rest-api-server.herokuapp.com/api/v1/user/' + id;
 
     var response = await http.delete(uri);
     if (response.statusCode == 200) {
-//      String body = response.body;
       print("success");
     } else{
       throw Exception('Failed');
     }
   }
 
+  void pressFavorite(Contact contact) {
+    if (isSaved(contact))
+      savedList.remove(contact);
+    else
+      savedList.add(contact);
+
+    print(savedList);
+  }
+
+  bool isSaved(Contact contact) {
+    return savedList.contains(contact);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Contact Manager'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.favorite),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => FavoritesContact(),
+                ),
+              );
+            },
+          )
+        ],
+      ),
       body: FutureBuilder<List<Contact>>(
         future: fetchContact(),
         builder: (context, snapshot) {
@@ -59,12 +89,10 @@ class _ContactListViewState extends State<ContactListView> {
                 return Dismissible(
                   key: new ObjectKey(contact.id),
                   onDismissed: (direction) {
-                    // Remove the item from the data source. Need to call API later
                     setState(() {
                       deleteContact(contact.id);
-
                       snapshot.data.removeAt(index);
-                      fetchContact();
+
                       Scaffold.of(context)
                           .showSnackBar(SnackBar(content: Text('${contact.firstName} ${contact.lastName} deleted')));
 
@@ -102,7 +130,12 @@ class _ContactListViewState extends State<ContactListView> {
                   child: ListTile(
                     title: Text('${contact.firstName} ${contact.lastName}'),
                     subtitle: Text('${contact.phoneNo}'),
-                    trailing: Icon(Icons.star_border),
+                    trailing: IconButton(icon: (isSaved(contact)) ? Icon(Icons.star) : Icon(Icons.star_border),
+                        onPressed: () {
+                        pressFavorite(contact);
+//                      setState(() {
+//                      });
+                    }),
                     leading: CircleAvatar(
                       backgroundColor: Colors.blue,
                       child: Icon(Icons.person),
@@ -125,6 +158,13 @@ class _ContactListViewState extends State<ContactListView> {
           }
         },
       ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => AddContact()));
+          },
+          child: Icon(Icons.person_add),
+          backgroundColor: Colors.blue,
+        )
     );
   }
 }
