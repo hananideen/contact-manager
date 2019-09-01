@@ -50,15 +50,11 @@ class _EditContactState extends State<EditContact> {
 
   updateContact(Contact contact) async {
     final String uri = 'https://mock-rest-api-server.herokuapp.com/api/v1/user/' +contact.id;
-    print(uri);
-
     Map<String, String> headers = {"Content-type": "application/json"};
     String json = jsonEncode(contact);
-    print(json);
 
     var response = await http.put(uri, headers: headers, body: json);
     if (response.statusCode == 200) {
-      String body = response.body;
       print("success");
     } else{
       throw Exception('Failed');

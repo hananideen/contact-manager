@@ -5,7 +5,6 @@ class Data {
 
   factory Data.fromJson(Map<String, dynamic> parsedJson) {
     var list = parsedJson['data'] as List;
-    print(list.runtimeType);
     List<Contact> contactsList = list.map((i) => Contact.fromJson(i)).toList();
 
     return new Data(

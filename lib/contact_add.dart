@@ -32,17 +32,11 @@ class _AddContactState extends State<AddContact> {
 
   addContact(Contact contact) async {
     final String uri = 'https://mock-rest-api-server.herokuapp.com/api/v1/user';
-    print(uri);
-
     Map<String, String> headers = {"Content-type": "application/json"};
     String json = jsonEncode(contact);
-    print(json);
 
     var response = await http.post(uri, headers: headers, body: json);
     if (response.statusCode == 200) {
-      String body = response.body;
-      print("success");
-      
       Navigator.pop(context);
     } else{
       throw Exception('Failed');

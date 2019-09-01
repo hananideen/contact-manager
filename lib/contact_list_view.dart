@@ -97,34 +97,6 @@ class _ContactListViewState extends State<ContactListView>{
 
                       Scaffold.of(context)
                           .showSnackBar(SnackBar(content: Text('${contact.firstName} ${contact.lastName} deleted')));
-
-//                      return showDialog(
-//                        context: context,
-//                        builder: (context) {
-//                          return AlertDialog(
-//                            content: Text("Are you sure you want to delete?"),
-//                            actions: <Widget>[
-//                              FlatButton(
-//                                child: const Text('NO'),
-//                                onPressed: () {
-//                                  Navigator.of(context).pop(ConfirmAction.CANCEL);
-//                                },
-//                              ),
-//                              FlatButton(
-//                                child: const Text('YES'),
-//                                onPressed: () {
-//                                  snapshot.data.removeAt(index);
-//
-//                                  Scaffold.of(context)
-//                                      .showSnackBar(SnackBar(content: Text('${contact.firstName} ${contact.lastName} deleted')));
-//
-//                                  Navigator.of(context).pop(ConfirmAction.ACCEPT);
-//                                },
-//                              )
-//                            ],
-//                          );
-//                        },
-//                      );
                     });
                   },
 
