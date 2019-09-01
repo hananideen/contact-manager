@@ -1,9 +1,11 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
 import './contact.dart';
-import './contact_details.dart';
 import './contact_add.dart';
+import './contact_details.dart';
 import './favorites_contact.dart';
 
 class ContactListView extends StatefulWidget {
@@ -64,7 +66,7 @@ class _ContactListViewState extends State<ContactListView>{
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => FavoritesContact(),
+                  builder: (context) => FavoritesContact(contacts: savedList),
                 ),
               );
             },
