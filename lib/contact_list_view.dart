@@ -51,7 +51,14 @@ class _ContactListViewState extends State<ContactListView> {
                   backgroundColor: Colors.blue,
                   child: Icon(Icons.person),
                 ),
-                onTap: onTapped,
+                onTap: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ContactDetails(contact: user),
+                    ),
+                  );
+                },
               ))
                   .toList(),
             );
@@ -61,13 +68,6 @@ class _ContactListViewState extends State<ContactListView> {
           }
         },
       ),
-    );
-  }
-
-  void onTapped() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => ContactDetails()),
     );
   }
 }
