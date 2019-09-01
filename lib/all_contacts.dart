@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import './contact_list_view.dart';
 
 class AllContact extends StatefulWidget {
-  _AllContact createState() => _AllContact();
+  _AllContactState createState() => _AllContactState();
 }
 
-class _AllContact extends State<AllContact> with AutomaticKeepAliveClientMixin<AllContact>{
+class _AllContactState extends State<AllContact> with AutomaticKeepAliveClientMixin<AllContact>{
   @override
   bool get wantKeepAlive => true;
 

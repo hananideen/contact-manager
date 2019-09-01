@@ -8,6 +8,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: DefaultTabController(
         length: 2,
         child: Scaffold(
@@ -26,6 +27,13 @@ class MyApp extends StatelessWidget {
               AllContact(),
               FavoritesContact(),
             ],
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              // Add your onPressed code here!
+            },
+            child: Icon(Icons.person_add),
+            backgroundColor: Colors.blue,
           ),
         ),
       ),

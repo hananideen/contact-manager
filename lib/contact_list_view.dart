@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import './contact.dart';
+import './contact_details.dart';
 
 
 class ContactListView extends StatefulWidget {
@@ -50,6 +51,7 @@ class _ContactListViewState extends State<ContactListView> {
                   backgroundColor: Colors.blue,
                   child: Icon(Icons.person),
                 ),
+                onTap: onTapped,
               ))
                   .toList(),
             );
@@ -59,6 +61,13 @@ class _ContactListViewState extends State<ContactListView> {
           }
         },
       ),
+    );
+  }
+
+  void onTapped() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ContactDetails()),
     );
   }
 }
