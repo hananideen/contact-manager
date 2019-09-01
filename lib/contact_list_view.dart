@@ -39,26 +39,44 @@ class _ContactListViewState extends State<ContactListView> {
               return Text("Error");
             }
 
-            return ListView(
-              children: snapshot.data
-                  .map((user) => ListTile(
-                title: Text(user.firstName + " " + user.lastName),
-                subtitle: Text(user.phoneNo),
-                trailing: Icon(Icons.star_border),
-                leading: CircleAvatar(
-                  backgroundColor: Colors.blue,
-                  child: Icon(Icons.person),
-                ),
-                onTap: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ContactDetails(contact: user),
+            return ListView.builder(
+              itemCount: snapshot.data.length,
+              itemBuilder: (context, index) {
+                final contact = snapshot.data[index];
+
+                return Dismissible(
+                  key: Key(contact.id),
+                  onDismissed: (direction) {
+                    // Remove the item from the data source. Need to call API later
+                    setState(() {
+                      snapshot.data.removeAt(index);
+                    });
+
+                    // Then show a snackbar.
+                    Scaffold.of(context)
+                        .showSnackBar(SnackBar(content: Text('${contact.firstName} ${contact.lastName} deleted')));
+                  },
+
+                  background: Container(color: Colors.grey),
+                  child: ListTile(
+                    title: Text('${contact.firstName} ${contact.lastName}'),
+                    subtitle: Text('${contact.phoneNo}'),
+                    trailing: Icon(Icons.star_border),
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.blue,
+                      child: Icon(Icons.person),
                     ),
-                  );
-                },
-              ))
-                  .toList(),
+                    onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ContactDetails(contact: contact),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              }
             );
 
           } else{
