@@ -1,3 +1,19 @@
+class Data {
+  final List<Contact> contacts;
+
+  Data({this.contacts});
+
+  factory Data.fromJson(Map<String, dynamic> parsedJson) {
+    var list = parsedJson['data'] as List;
+    print(list.runtimeType);
+    List<Contact> contactsList = list.map((i) => Contact.fromJson(i)).toList();
+
+    return new Data(
+        contacts: contactsList
+    );
+  }
+}
+
 class Contact {
   final String id;
   final String firstName;
@@ -7,7 +23,14 @@ class Contact {
   final String dateOfBirth;
   final String phoneNo;
 
-  Contact({this.id, this.firstName, this.lastName, this.email, this.gender, this.dateOfBirth, this.phoneNo});
+  Contact({
+    this.id,
+    this.firstName,
+    this.lastName,
+    this.email,
+    this.gender,
+    this.dateOfBirth,
+    this.phoneNo});
 
   factory Contact.fromJson(Map<String, dynamic> json) {
     return Contact(

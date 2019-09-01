@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import './contact_list_view.dart';
-import './listview_json_api_task-4.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,8 +13,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-//      home: ContactListView(),
-      home: ListViewJsonapi(),
+      home: ContactListView(),
     );
   }
 }
